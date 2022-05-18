@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
 import { toast } from 'react-toastify';
 import ToDoList from '../ToDoList/ToDoList';
 
@@ -7,10 +6,6 @@ const ToDoApp = () => {
 
 
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-  
-
-  // const {data, isLoading, refetch} = useQuery('items', () => )
 
  useEffect(() => {
   fetch('https://fast-woodland-87197.herokuapp.com/user')
@@ -19,11 +14,6 @@ const ToDoApp = () => {
   setItems(data);
   })
  }, [items])
-
-
-  // if(isLoading){
-  //   return <p className='text-center text-3xl font-bold '>Loading.............</p>
-  // }
 
   const handleUserSubmit = (e) => {
     e.preventDefault();
@@ -51,7 +41,7 @@ const ToDoApp = () => {
   const handleDelete = (id) => {
     const confirmation = window.confirm('Are Your Sure You Want To Delete ?')
     if (confirmation) {
-        const url = `http://localhost:5000/item/${id}`
+        const url = `https://fast-woodland-87197.herokuapp.com/item/${id}`
         fetch(url, {
             method: 'DELETE',
         })
