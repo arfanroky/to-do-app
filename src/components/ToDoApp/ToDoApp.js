@@ -6,21 +6,24 @@ import ToDoList from '../ToDoList/ToDoList';
 const ToDoApp = () => {
 
 
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
   
-  
 
-  const {data, isLoading, refetch} = useQuery('items', () => fetch('http://localhost:5000/user').then(res => res.json()))
+  // const {data, isLoading, refetch} = useQuery('items', () => )
+
+ useEffect(() => {
+  fetch('https://fast-woodland-87197.herokuapp.com/user')
+  .then(res => res.json())
+  .then(data => {
+  setItems(data);
+  })
+ }, [items])
 
 
-  if(isLoading){
-    return <p className='text-center text-3xl font-bold '>Loading.............</p>
-  }
-
-
-  console.log(data);
-
- 
-
+  // if(isLoading){
+  //   return <p className='text-center text-3xl font-bold '>Loading.............</p>
+  // }
 
   const handleUserSubmit = (e) => {
     e.preventDefault();
@@ -29,7 +32,7 @@ const ToDoApp = () => {
     const description = e.target.description.value;
     const user = {name, description}
 
-    fetch('http://localhost:5000/user', {
+    fetch('https://fast-woodland-87197.herokuapp.com/user', {
       method:'POST',
       headers:{
         'content-type': 'application/json'
@@ -40,10 +43,29 @@ const ToDoApp = () => {
     .then(data => {
       console.log(data);
       toast.success(data?.message)
-      refetch();
+      // refetch();
     })
 
   };
+
+  const handleDelete = (id) => {
+    const confirmation = window.confirm('Are Your Sure You Want To Delete ?')
+    if (confirmation) {
+        const url = `http://localhost:5000/item/${id}`
+        fetch(url, {
+            method: 'DELETE',
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            if(data.deletedCount > 0){
+                const itemDelete = items?.filter(p => p._id !== id);
+                setItems(itemDelete)
+                toast.success('Delete Successfully',)
+            }
+        })
+    }
+}
 
 
 
@@ -71,7 +93,9 @@ const ToDoApp = () => {
         <input className="btn px-6 w-full" value="Add" type="submit" />
       </form>
       <ToDoList
-      data={data}
+      handleDelete={handleDelete}
+      items={items}
+      // data={data}
       ></ToDoList>
     </div>
   );
