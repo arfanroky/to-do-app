@@ -33,7 +33,6 @@ const ToDoApp = () => {
     .then(data => {
       console.log(data);
       toast.success(data?.message)
-      // refetch();
     })
 
   };
@@ -70,13 +69,13 @@ const ToDoApp = () => {
         <input
           type="text"
           required
-          placeholder="Type here"
+          placeholder="Task Name"
           name="name"
           className="w-full mx-auto input mb-4"
         />
         <textarea
           className="textarea  textarea-bordered  w-full"
-          placeholder="Bio"
+          placeholder="Description"
           name="description"
         ></textarea>
 
